@@ -16,19 +16,29 @@ function recordClick(linkId: string) {
   }).catch(() => {});
 }
 
-export default function LinkCard({ link }: { link: LinkItem }) {
+type Props = {
+  link: LinkItem;
+  count: number;
+  onClick: () => void;
+};
+
+export default function LinkCard({ link, count, onClick }: Props) {
   return (
     <a
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() => recordClick(link.id)}
-      className="flex w-full items-center justify-center rounded-3xl border border-white/60 bg-white/45 px-6 py-4 text-[15px] font-medium shadow-[0_4px_20px_-6px_rgba(180,110,70,0.18)] backdrop-blur-md transition duration-300 ease-out hover:-translate-y-px hover:bg-white/65 hover:shadow-[0_8px_24px_-8px_rgba(180,110,70,0.28)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 active:translate-y-0"
+      onClick={() => {
+        recordClick(link.id);
+        onClick();
+      }}
+      className="relative flex w-full items-center justify-center rounded-3xl border border-white/60 bg-white/45 px-6 py-4 text-[15px] font-medium shadow-[0_4px_20px_-6px_rgba(180,110,70,0.18)] backdrop-blur-md transition duration-300 ease-out hover:-translate-y-px hover:bg-white/65 hover:shadow-[0_8px_24px_-8px_rgba(180,110,70,0.28)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 active:translate-y-0"
     >
       <span aria-hidden="true" className="mr-2">
         {link.icon}
       </span>
       {link.title}
+      <span className="absolute right-6 text-xs font-normal text-muted tabular-nums">{count}회</span>
     </a>
   );
 }
